@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger(column: 'user_id');
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('restrict');
-            $table->string('profile pic') ;
+            $table->string('profile|_pic') ;
             $table->timestamps();
         });
     }

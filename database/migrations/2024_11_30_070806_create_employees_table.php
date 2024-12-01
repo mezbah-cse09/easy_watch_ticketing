@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('NID');
             $table->string('salary');
-            $table->date('join date');
+            $table->date('join_date');
              $table->timestamps();
         });
     }

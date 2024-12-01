@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
             $table->string('seats');
-            $table->string('ticket_id');
+            $table->unsignedBigInteger('ticket_id');
             $table->unsignedBigInteger(column: 'user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreign('ticket_id')->references(columns: 'id')->on('tickets')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreign('user_id')->references(columns: 'id')->on('users')->onUpdate('cascade')->onDelete('restrict');
             $table->timestamps();
         });
     }
