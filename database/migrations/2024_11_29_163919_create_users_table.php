@@ -11,17 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create(table: 'users', callback: function (Blueprint $table) {
             $table->id();
-            $table->string('fast_name');
-            $table->string('last_name');
-            $table->string('email')->unique();
-            $table->string('phone');
-            $table->string('password');
-            $table->string('otp')->nullable();
-            $table->enum('role', ['customer', 'admin', 'employee'])->default('customer');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            $table->string(column: 'first_name', length: 50);
+            $table->string(column: 'last_name', length: 50);
+            $table->string(column: 'email', length: 50)->unique();
+            $table->string(column: 'mobile_no', length: 15);
+            $table->string(column: 'password', length: 50);
+            $table->string(column: 'otp', length: 10);
+            $table->enum(column: 'role', allowed: ['customer', 'admin', 'employee'])->default('customer');
+            $table->timestamp(column: 'created_at')->useCurrent();
+            $table->timestamp(column: 'updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

@@ -45,7 +45,6 @@ class UserController extends Controller
                 'status' => 'error',
             ], 500);
         }
-
     }
 
     function UserLogin(Request $request)
@@ -86,7 +85,8 @@ class UserController extends Controller
     }
 
 
-    function SentOTP(Request $request){
+    function SentOTP(Request $request)
+    {
         $request->validate([
             'email' => 'required|email|exists:users,email',
         ]);
@@ -94,25 +94,24 @@ class UserController extends Controller
         $email = $request->input('email');
         $otp = rand(1000, 9999);
 
-       try{
+        try {
 
-        Mail::to($email)->send(new OTPMail($otp));
+            Mail::to($email)->send(new OTPMail($otp));
 
-        User::where('email', $email)->update([
-            'otp' => $otp,
-            'created_at' => now()
-        ]);
-        return response()->json([
-            'message' => 'OTP sent successfully',
-            'status' => 'success',
-        ], 200);
-       }
-       catch(Exception $e){
-        return response()->json([
-            'message' => 'Failed to send OTP',
-            'status' => 'error',
-        ], 500);
-       }
+            User::where('email', $email)->update([
+                'otp' => $otp,
+                'created_at' => now()
+            ]);
+            return response()->json([
+                'message' => 'OTP sent successfully',
+                'status' => 'success',
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Failed to send OTP',
+                'status' => 'error',
+            ], 500);
+        }
     }
 
     function VerifyOTP(Request $request)
@@ -188,7 +187,6 @@ class UserController extends Controller
                 'message' => 'Something went wrong'
             ], 500);
         }
-
     }
 
     function Logout(Request $request)
@@ -198,7 +196,4 @@ class UserController extends Controller
             'message' => 'Logout successfully'
         ], 200)->cookie('token', '', -1);
     }
-
-
-
 }

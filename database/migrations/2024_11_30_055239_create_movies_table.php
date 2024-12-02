@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('movie_title');
             $table->string('grid_img');
-            $table->string('banner_img') ;
+            $table->string('banner_img');
             $table->Enum('genre', ['comedy', 'action', 'drama']);
             $table->float('rating', 3, 2)->nullable();
             $table->date('release_date');
-            $table->Enum('category', ['scl_fi', 'adventure', 'thriller']);
-            $table->string('IMDB_link');
+            $table->Enum('category', ['sci_fi', 'adventure', 'thriller']);
+            $table->string('IMDb_link');
             $table->timestamps();
         });
     }
