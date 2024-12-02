@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MovieController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\TokenVerification;
 use Illuminate\Support\Facades\Route;
@@ -15,10 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return "view('welcomez')";
-});
-
 Route::post('/user-registration', [UserController::class, 'UserRegistration']);
 
 Route::post('/user-login', [UserController::class, 'UserLogin']);
@@ -30,3 +27,7 @@ Route::post('/verify-otp', [UserController::class, 'VerifyOTP']);
 Route::post('/reset-password', [UserController::class, 'ResetPassword'])->middleware([TokenVerification::class]);
 
 Route::get('/user-logout', [UserController::class, 'Logout']);
+
+Route::resources([
+    'movies' => MovieController::class,
+]); // movie feature CRUD API for admin 
