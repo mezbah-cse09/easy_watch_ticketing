@@ -33,7 +33,6 @@ Route::post('/verify-otp', [UserController::class, 'VerifyOTP']);
 
 Route::post('/reset-password', [UserController::class, 'ResetPassword'])->middleware([TokenVerification::class]);
 
-<<<<<<< HEAD
 Route::get('/user-logout', [UserController::class, 'Logout']);
 
 
@@ -51,7 +50,8 @@ Route::put('/hall/{id}', [HallController::class, 'update']);  // Update hall
 Route::delete('/halls/{id}', [HallController::class, 'Delete']);  // Delete hall
 Route::get('/hall', [HallController::class, 'HallById']);  // HallById hall
 Route::get('/halls', [HallController::class, 'SelectAllHall']);  // SelectAllHall
-=======
+
+
 Route::get('/user-logout', [UserController::class, 'Logout'])->middleware([TokenVerification::class]);
 
 Route::group([TokenVerification::class], function () {
@@ -71,4 +71,3 @@ Route::post('/delete-profile', [ProfileController::class, 'deleteProfile']);
 Route::resources([
     'movies' => MovieController::class,
 ]); // movie feature CRUD API for admin 
->>>>>>> 712a551429de86edc6e5caff04baa1e8b11698f0
