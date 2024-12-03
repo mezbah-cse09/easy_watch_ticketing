@@ -14,24 +14,24 @@ class UserController extends Controller
 {
     public function UserRegistration(Request $request)
     {
-        $request->validate([
-            'fast_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'phone' => 'required|string|max:15',
-            'password' => 'required|string|min:8',
-            'role' => 'required|in:customer,admin,employee'
-        ]);
-
         try {
 
+            request()->validate([
+                'fast_name' => 'required|string',
+                'last_name' => 'required|string',
+                'email' => 'required|email|unique:users',
+                'phone' => 'required|string',
+                'password' => 'required|string|min:8',
+                'role' => 'nullable|string',
+            ]);
+            
             $user = User::create([
                 'fast_name' => $request->input('fast_name'),
                 'last_name' => $request->input('last_name'),
                 'email' => $request->input('email'),
                 'phone' => $request->input('phone'),
                 'password' => bcrypt($request->input('password')),
-                'role' => $request->input('role'),
+                'role' => $request->input('role') ?? 'customer',
             ]);
 
             return response()->json([
@@ -71,22 +71,28 @@ class UserController extends Controller
             ], 401);
         }
 
-        $token = JWTToken::CreateToken($request->input('email'), $user->id);
-        return response()->json([
-            'message' => 'Login successful',
-            'status' => 'success',
-            'data' => [
-                'id' => $user->id,
-                'name' => $user->fast_name . ' ' . $user->last_name,
-                'email' => $user->email,
-                'role' => $user->role,
-            ],
+        $token = JWTToken::CreateToken($request->input('email'), $user->id, $user->role);
 
-        ], 200)->cookie('token', $token, 60 * 24);
+        switch ($user->role) {
+            case 'admin':
+                return redirect('/admin/dashboard')->withCookie(cookie('token', $token, 60 * 24));
+
+            case 'customer':
+                return redirect('/customer/home')->withCookie(cookie('token', $token, 60 * 24));
+
+            case 'employee':
+                return redirect('/employee/home')->withCookie(cookie('token', $token, 60 * 24));
+
+            default:
+                return response()->json([
+                    'message' => 'Invalid role.',
+                    'status' => 'error',
+                ], 403);
+        }
     }
 
-
-    function SentOTP(Request $request){
+    function SentOTP(Request $request)
+    {
         $request->validate([
             'email' => 'required|email|exists:users,email',
         ]);
@@ -94,25 +100,24 @@ class UserController extends Controller
         $email = $request->input('email');
         $otp = rand(1000, 9999);
 
-       try{
+        try {
 
-        Mail::to($email)->send(new OTPMail($otp));
+            Mail::to($email)->send(new OTPMail($otp));
 
-        User::where('email', $email)->update([
-            'otp' => $otp,
-            'created_at' => now()
-        ]);
-        return response()->json([
-            'message' => 'OTP sent successfully',
-            'status' => 'success',
-        ], 200);
-       }
-       catch(Exception $e){
-        return response()->json([
-            'message' => 'Failed to send OTP',
-            'status' => 'error',
-        ], 500);
-       }
+            User::where('email', $email)->update([
+                'otp' => $otp,
+                'created_at' => now()
+            ]);
+            return response()->json([
+                'message' => 'OTP sent successfully',
+                'status' => 'success',
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Failed to send OTP',
+                'status' => 'error',
+            ], 500);
+        }
     }
 
     function VerifyOTP(Request $request)
@@ -121,7 +126,7 @@ class UserController extends Controller
 
         $email = $request->input('email');
         $otp = $request->input('otp');
-        $otpValidityMinutes = 2;
+        $otpValidityMinutes = 5;
 
         $user = User::where('email', $email)->first();
 
@@ -143,7 +148,7 @@ class UserController extends Controller
             ]);
 
 
-            $token = JWTToken::CreateTokenForPassword($email);
+            $token = JWTToken::CreateTokenForPassword($email, $user->id, $user->role);
             return response()->json([
                 'status' => 'success',
                 'message' => 'OTP verified successful',
@@ -193,12 +198,17 @@ class UserController extends Controller
 
     function Logout(Request $request)
     {
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Logout successfully'
-        ], 200)->cookie('token', '', -1);
+
+
+        if ($request->cookie('token')) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'You are logged out successfully'
+            ], 200)->cookie('token', '', -1);
+        }
+        return redirect('/userLogin');
+
+
     }
-
-
 
 }

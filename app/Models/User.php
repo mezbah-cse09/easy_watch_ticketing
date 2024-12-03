@@ -17,10 +17,22 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = ['fast_name','last_name','email','phone','password','otp','role'
+    protected $fillable = [
+        'fast_name',
+        'last_name',
+        'email',
+        'phone',
+        'password',
+        'otp',
+        'role'
     ];
 
-    protected $attributes = [ 'otp' => 0];
+    protected $attributes = ['otp' => 0];
+
+    function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.
