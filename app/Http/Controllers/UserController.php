@@ -24,7 +24,7 @@ class UserController extends Controller
                 'password' => 'required|string|min:8',
                 'role' => 'nullable|string',
             ]);
-            
+
             $user = User::create([
                 'fast_name' => $request->input('fast_name'),
                 'last_name' => $request->input('last_name'),
@@ -90,10 +90,6 @@ class UserController extends Controller
         }
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 04db23ecb302808140d4a798fc144bb958cb07ad
     function SentOTP(Request $request)
     {
         $request->validate([
@@ -212,8 +208,7 @@ class UserController extends Controller
 
 
     }
-<<<<<<< HEAD
 
-=======
->>>>>>> 04db23ecb302808140d4a798fc144bb958cb07ad
+
+
 }
