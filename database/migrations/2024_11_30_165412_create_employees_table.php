@@ -11,15 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create(table: 'users', callback: function (Blueprint $table) {
+        Schema::create(table: 'employees', callback: function (Blueprint $table) {
             $table->id();
+
+            $table->unsignedBigInteger(column: 'user_id');
+            $table->foreign(columns: 'user_id')->references(columns: 'id')->on(table: 'users')
+                ->cascadeOnUpdate()->restrictOnDelete();
+
             $table->string(column: 'first_name', length: 50);
             $table->string(column: 'last_name', length: 50);
-            $table->string(column: 'email', length: 50)->unique();
-            $table->string(column: 'mobile_no', length: 15);
-            $table->string(column: 'password', length: 50);
-            $table->string(column: 'otp', length: 10);
-            $table->enum(column: 'role', allowed: ['customer', 'admin', 'employee'])->default('customer');
+            $table->string(column: 'national_id', length: 50)->unique();
+            $table->integer(column: 'salary');
+            $table->string(column: 'joining_date', length: 50);
             $table->timestamp(column: 'created_at')->useCurrent();
             $table->timestamp(column: 'updated_at')->useCurrent()->useCurrentOnUpdate();
         });
@@ -30,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('employees');
     }
 };

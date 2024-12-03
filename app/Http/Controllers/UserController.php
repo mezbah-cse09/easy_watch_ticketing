@@ -45,7 +45,6 @@ class UserController extends Controller
                 'status' => 'error',
             ], 500);
         }
-
     }
 
     function UserLogin(Request $request)
@@ -91,6 +90,10 @@ class UserController extends Controller
         }
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 04db23ecb302808140d4a798fc144bb958cb07ad
     function SentOTP(Request $request)
     {
         $request->validate([
@@ -193,7 +196,6 @@ class UserController extends Controller
                 'message' => 'Something went wrong'
             ], 500);
         }
-
     }
 
     function Logout(Request $request)
@@ -210,5 +212,8 @@ class UserController extends Controller
 
 
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 04db23ecb302808140d4a798fc144bb958cb07ad
 }
