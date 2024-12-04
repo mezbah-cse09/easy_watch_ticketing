@@ -1,13 +1,11 @@
 <?php
 
-<<<<<<< HEAD
+
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ProfileController;
-=======
 use App\Http\Controllers\MovieController;
->>>>>>> 04db23ecb302808140d4a798fc144bb958cb07ad
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\TokenVerification;
 use Illuminate\Support\Facades\Route;
@@ -35,23 +33,24 @@ Route::post('/reset-password', [UserController::class, 'ResetPassword'])->middle
 
 Route::get('/user-logout', [UserController::class, 'Logout'])->middleware([TokenVerification::class]);
 
-<<<<<<< HEAD
 Route::group([TokenVerification::class], function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
     Route::get('/customer/home', [CustomerController::class, 'home']);
     Route::get('/employee/home', [EmployeeController::class, 'home']);
 });
 
-
 Route::post('/upload-image', [ProfileController::class, 'uploadImage']);
-
 Route::get('/profile-show', [ProfileController::class, 'profileShow']);
-
 Route::post('/update-profile', [ProfileController::class, 'updateProfile']);
-
 Route::post('/delete-profile', [ProfileController::class, 'deleteProfile']);
-=======
+
+Route::post('/create-employee', [EmployeeController::class, 'createEmployee']);
+Route::get('/show-employee', [EmployeeController::class, 'showEmployee']);
+Route::patch('/update-employee/{id}', [EmployeeController::class, 'updateEmployee']);
+Route::get('/delete-employee', [EmployeeController::class, 'deleteEmployee']);
+
 Route::resources([
     'movies' => MovieController::class,
-]); // movie feature CRUD API for admin 
->>>>>>> 04db23ecb302808140d4a798fc144bb958cb07ad
+]); // movie feature CRUD API for admin
+
+
