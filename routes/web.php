@@ -3,14 +3,13 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\HallController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\TokenVerification;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LocationController;
-use App\Http\Controllers\HallController;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -33,9 +32,7 @@ Route::post('/verify-otp', [UserController::class, 'VerifyOTP']);
 
 Route::post('/reset-password', [UserController::class, 'ResetPassword'])->middleware([TokenVerification::class]);
 
-Route::get('/user-logout', [UserController::class, 'Logout']);
-
-
+Route::get('/user-logout', [UserController::class, 'Logout'])->middleware([TokenVerification::class]);
 
 Route::post('/locations', [LocationController::class, 'Create']);  // Create location
 Route::put('/locations/{id}', [LocationController::class, 'Update']);  // Update location
@@ -51,23 +48,23 @@ Route::delete('/halls/{id}', [HallController::class, 'Delete']);  // Delete hall
 Route::get('/hall', [HallController::class, 'HallById']);  // HallById hall
 Route::get('/halls', [HallController::class, 'SelectAllHall']);  // SelectAllHall
 
-
-Route::get('/user-logout', [UserController::class, 'Logout'])->middleware([TokenVerification::class]);
-
 Route::group([TokenVerification::class], function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
     Route::get('/customer/home', [CustomerController::class, 'home']);
     Route::get('/employee/home', [EmployeeController::class, 'home']);
 });
 
-
 Route::post('/upload-image', [ProfileController::class, 'uploadImage']);
-
 Route::get('/profile-show', [ProfileController::class, 'profileShow']);
-
 Route::post('/update-profile', [ProfileController::class, 'updateProfile']);
-
 Route::post('/delete-profile', [ProfileController::class, 'deleteProfile']);
+
+Route::post('/create-employee', [EmployeeController::class, 'createEmployee']);
+Route::get('/show-employee', [EmployeeController::class, 'showEmployee']);
+Route::post('/update-employee/{id}', [EmployeeController::class, 'updateEmployee']);
+Route::get('/delete-employee', [EmployeeController::class, 'deleteEmployee']);
+
 Route::resources([
     'movies' => MovieController::class,
-]); // movie feature CRUD API for admin 
+]); // movie feature CRUD API for admin
+
