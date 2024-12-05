@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
@@ -46,11 +45,10 @@ Route::post('/delete-profile', [ProfileController::class, 'deleteProfile']);
 
 Route::post('/create-employee', [EmployeeController::class, 'createEmployee']);
 Route::get('/show-employee', [EmployeeController::class, 'showEmployee']);
-Route::patch('/update-employee/{id}', [EmployeeController::class, 'updateEmployee']);
+Route::post('/update-employee/{id}', [EmployeeController::class, 'updateEmployee']);
 Route::get('/delete-employee', [EmployeeController::class, 'deleteEmployee']);
 
 Route::resources([
     'movies' => MovieController::class,
 ]); // movie feature CRUD API for admin
-
 
